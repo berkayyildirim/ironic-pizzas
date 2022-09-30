@@ -1,30 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-
-// schema = pattern that all documents in a collection will follow.
-
-const pizzaSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  isVeggie: {
-    type: Boolean,
-    default: false,
-  },
-  ingredients: [],
-  dough: {
-    type: String,
-    enum: ["thin", "thick", "with cheese", "with garlic"],
-  },
-});
-
-const Pizza = mongoose.model("Pizza", pizzaSchema);
+const Pizza = require("./models/Pizza.model");
 
 mongoose
   .connect("mongodb://localhost/ironic-pizzas-db")
@@ -64,7 +39,11 @@ mongoose
     // pizzasArr.forEach( pizza => console.log(pizza.title))
 
     // Model.updateMany(filter, update [, options])
-    return Pizza.updateMany({ isVeggie: true }, { price: 9.5 });
+    return Pizza.findOneAndUpdate(
+      { isVeggie: true },
+      { price: 9.5 },
+      { returnDocument: "after" }
+    );
   })
   .then((responseFromDB) => {
     console.log(responseFromDB);

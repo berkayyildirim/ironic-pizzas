@@ -25,14 +25,20 @@ app.get("/pizzas/margherita", (req, res, next) => {
   //res.send("hello")
   //res.sendFile(__dirname + '/views/pizza-margherita.html');
 
-  const data = {
-    title: "Pizza Margherita",
-    price: 8,
-    imgFile: "pizza-margherita.jpg",
-    ingredients: ["mozzarella", "tomato sauce", "basilicum"],
-  };
+  // const data = {
+  //     title: "Pizza Margherita",
+  //     price: 8,
+  //     imgFile: "pizza-margherita.jpg",
+  //     ingredients: ["mozzarella", "tomato sauce", "basilicum"]
+  // }
 
-  res.render("pizza-page", data);
+  Pizza.findOne({ title: "pizza margaritta" })
+    .then((pizzaFromDB) => {
+      res.render("pizza-page", pizzaFromDB);
+    })
+    .catch((err) => {
+      console.log("Error getting pizza details from DB", err);
+    });
 });
 
 app.get("/pizzas/carbonara", (req, res, next) => {
